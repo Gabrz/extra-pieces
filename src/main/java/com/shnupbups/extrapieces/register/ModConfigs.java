@@ -40,6 +40,7 @@ public class ModConfigs {
 	public static boolean columns = true;
 	public static boolean posts = true;
 	public static boolean layers = true;
+	public static boolean trims = true;
 	
 	private static int setsNum = 0;
 	private static int ppSetsNum = 0;
@@ -72,6 +73,7 @@ public class ModConfigs {
 			columns = types.get("columns").equals(JsonPrimitive.TRUE);
 			posts = types.get("posts").equals(JsonPrimitive.TRUE);
 			layers = types.get("layers").equals(JsonPrimitive.TRUE);
+			trims = types.get("trims").equals(JsonPrimitive.TRUE);
 		} catch (IOException e) {
 			generateConfig(config);
 		} catch (SyntaxError e) {
@@ -263,7 +265,8 @@ public class ModConfigs {
 					!types.containsKey("fenceGates") ||
 					!types.containsKey("columns") ||
 					!types.containsKey("posts") ||
-					!types.containsKey("layers");
+					!types.containsKey("layers") ||
+					!types.containsKey("trims");
 		}
 	}
 
@@ -303,6 +306,8 @@ public class ModConfigs {
 			types.put("posts", new JsonPrimitive(posts));
 		if(!types.containsKey("layers"))
 			types.put("layers", new JsonPrimitive(layers));
+		if(!types.containsKey("trims"))
+			types.put("trims", new JsonPrimitive(trims));
 		cfg.put("pieceTypes", types);
 		if (config.exists()) config.delete();
 		try (FileWriter writer = new FileWriter(config)) {

@@ -19,6 +19,9 @@ public class ModRecipes {
 	public static final ShapedPieceRecipe FENCES_TO_BASE = new ShapedPieceRecipe(PieceTypes.BASE, 4, "ss", "ss").addToKey('s', PieceTypes.FENCE);
 	public static final ShapedPieceRecipe POSTS_TO_BASE = new ShapedPieceRecipe(PieceTypes.BASE, 4, "ss", "ss").addToKey('s', PieceTypes.POST);
 	public static final ShapedPieceRecipe COLUMNS_TO_BASE = new ShapedPieceRecipe(PieceTypes.BASE, 4, "ss", "ss").addToKey('s', PieceTypes.COLUMN);
+	public static final ShapedPieceRecipe TRIMS_TO_BASE = new ShapedPieceRecipe(PieceTypes.BASE, 4, "ss", "ss").addToKey('s', PieceTypes.TRIM);
+	public static final ShapedPieceRecipe TRIMS_TO_SIDING = new ShapedPieceRecipe(PieceTypes.SIDING, 2, "s", "s").addToKey('s', PieceTypes.TRIM);
+	public static final ShapedPieceRecipe TRIMS_TO_SLAB = new ShapedPieceRecipe(PieceTypes.SLAB, 2, "ss").addToKey('s', PieceTypes.TRIM);
 
 	public static final ShapelessPieceRecipe STAIRS_TO_CORNER = new ShapelessPieceRecipe(PieceTypes.CORNER, 1, new PieceIngredient(PieceTypes.STAIRS));
 	public static final ShapelessPieceRecipe CORNER_TO_STAIRS = new ShapelessPieceRecipe(PieceTypes.STAIRS, 1, new PieceIngredient(PieceTypes.CORNER));
@@ -141,6 +144,14 @@ public class ModRecipes {
 				r++;
 			}
 		}
+		if (ps.hasPiece(PieceTypes.TRIM)) {
+			Identifier bid = Registry.BLOCK.getId(ps.getPiece(PieceTypes.TRIM));
+			if (!checkIsAir(bid, ps)) {
+				Identifier id = ExtraPieces.getID(bid.getPath() + "_to_base");
+				TRIMS_TO_BASE.add(data, id, ps);
+				r++;
+			}
+		}
 		if (ps.hasPiece(PieceTypes.LAYER) && ps.hasPiece(PieceTypes.SLAB)) {
 			Identifier bid = Registry.BLOCK.getId(ps.getPiece(PieceTypes.LAYER));
 			if (!checkIsAir(bid, ps)) {
@@ -189,6 +200,15 @@ public class ModRecipes {
 				Identifier id2 = ExtraPieces.getID(bid2.getPath() + "_to_wall");
 				COLUMN_TO_WALL.add(data, id2, ps);
 				r++;
+			}
+		}
+		if (ps.hasPiece(PieceTypes.TRIM)) {
+			Identifier bid = Registry.BLOCK.getId(ps.getPiece(PieceTypes.TRIM));
+			if (!checkIsAir(bid, ps)) {
+				TRIMS_TO_BASE.add(data, ExtraPieces.getID(bid.getPath() + "_to_base"), ps);
+				TRIMS_TO_SIDING.add(data, ExtraPieces.getID(bid.getPath() + "_to_siding"), ps);
+				TRIMS_TO_SLAB.add(data, ExtraPieces.getID(bid.getPath() + "_to_slab"), ps);
+				r+=3;
 			}
 		}
 	}
